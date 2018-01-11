@@ -3,10 +3,10 @@ A simple ls-like tool to recursively display directories and sub-directories and
 
 # INSTALLATION
 
-git clone https://github.com/yo-kai-sei-shin-kage/lstree.git
-cd lstree
-chmod +x lstree.sh
-cp lstree.sh /usr/bin/lstree
+1.) `git clone https://github.com/yo-kai-sei-shin-kage/lstree.git`
+2.) `cd lstree`
+3.) `chmod +x lstree.sh`
+4.) `cp lstree.sh /usr/bin/lstree`
 
 # USAGE
 
