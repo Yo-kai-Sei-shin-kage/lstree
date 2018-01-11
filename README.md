@@ -11,8 +11,8 @@ A simple ls-like tool to recursively display directories and sub-directories and
 # USAGE
 
 Use lstree in the same way you would the standard `ls` command.
-<user@linux: `lstree /path/to/directory`\n>
-<user@linux: `lstree`\n>
+<user@linux: `lstree /path/to/directory`>
+<user@linux: `lstree`>
 
 # Future Add-ons
 
