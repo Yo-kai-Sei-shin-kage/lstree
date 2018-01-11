@@ -8,6 +8,7 @@
 ## COLORS ##
 blk=$'\x1b[90m'
 red=$'\x1b[91m'
+org=$'\e[38;05;208m'
 grn=$'\x1b[92m'
 ylw=$'\x1b[93m'
 blu=$'\x1b[94m'
@@ -29,7 +30,7 @@ do
 
     elif [ -f "$f" ]; then
 
-         echo -e "${pur}${f/${*}/      }${rst}" | tr -d '/'
+       echo -e "\t${red}(Access: $(stat -c %U:%G "${f}") $(stat -c%A "${f}")); ${pur}${f/${*}/}${rst}" | tr -d '/'
 
     fi
 
