@@ -3,16 +3,16 @@ A simple ls-like tool to recursively display directories and sub-directories and
 
 # INSTALLATION
 
-1.) `git clone https://github.com/yo-kai-sei-shin-kage/lstree.git`
-2.) `cd lstree`
-3.) `chmod +x lstree.sh`
-4.) `cp lstree.sh /usr/bin/lstree`
+1.) `git clone https://github.com/yo-kai-sei-shin-kage/lstree.git`\n
+2.) `cd lstree`\n
+3.) `chmod +x lstree.sh`\n
+4.) `cp lstree.sh /usr/bin/lstree`\n
 
 # USAGE
 
 Use lstree in the same way you would the standard `ls` command.
-user@linux:~$ lstree /path/to/directory
-user@linux:~$ lstree 
+user@linux: lstree /path/to/directory\n
+user@linux: lstree\n
 
 # Future Add-ons
 
