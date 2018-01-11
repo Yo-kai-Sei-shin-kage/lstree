@@ -7,7 +7,7 @@
 
 main() {
 
-for f in ${1}/*
+for f in "${*}"/*
 do
 
     if [ -d "$f" ] ; then
@@ -18,7 +18,7 @@ do
 
     elif [ -f "$f" ]; then
 
-         echo -e "${pur}${f/${1}/      }${rst}" | tr -d '/'
+         echo -e "${pur}${f/${*}/      }${rst}" | tr -d '/'
 
     fi
 
