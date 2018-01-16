@@ -7,8 +7,8 @@ in a nice colorful manner.
 
 1.) git clone https://github.com/yo-kai-sei-shin-kage/lstree.git
 2.) cd lstree
-3.) chmod u+x lstree.sh
-4.) cp lstree.sh /usr/bin/lstree
+3.) chmod u+x lstree
+4.) mv lstree /usr/bin/lstree
 
 ## USAGE ##
 
