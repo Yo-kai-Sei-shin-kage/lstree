@@ -12,12 +12,14 @@ in a nice colorful manner.
 
 ## USAGE ##
 
-Use lstree in the same way you would the standard `ls` command. For now, lstree
-accepts no positional parameters/arguments. This may change in the future.
+    Usage: fmon.sh [-hmrs] <directory/file...>
 
-~Example~
-user@linux:~$ lstree /path/to/directory
-user@linux:~$ lstree
+    Options:
+
+    -s Print information about a single file.
+    -r Print information about multiple files of recursive directories.
+    -m Print information about the last and current file modification.
+    -h Print this help info.
 
 ## Future Add-ons ##
 
