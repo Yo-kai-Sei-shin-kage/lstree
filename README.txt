@@ -12,13 +12,15 @@ in a nice colorful manner.
 
 ## USAGE ##
 
-$ lstree [-hmrs] <directory/file...>
+$ lstree [-fFdDhU] <directory/file...>
 
-Options:
+    Options:
 
-    -s Print information about a single file.
-    -r Print information about multiple files of recursive directories.
-    -m Print information about the last and current file modification.
+    -f Print information about a single file.
+    -F Print information about multiple files.
+    -d Print information about all files in a single directory.
+    -D Print information about all files in all sub-directories of the given directory.
+    -U Update lstree.
     -h Print this help info.
 
 ## Future Add-ons ##
