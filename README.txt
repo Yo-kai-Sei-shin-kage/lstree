@@ -12,9 +12,9 @@ in a nice colorful manner.
 
 ## USAGE ##
 
-    Usage: fmon.sh [-hmrs] <directory/file...>
+$ fmon.sh [-hmrs] <directory/file...>
 
-    Options:
+Options:
 
     -s Print information about a single file.
     -r Print information about multiple files of recursive directories.
