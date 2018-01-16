@@ -1,0 +1,167 @@
+#!/bin/bash
+#
+# lstree by Yokai Seishinkage
+#
+# This tool functions similarly to "ls" in that it displays files and directories but
+# does so using a tree-like structure and a more aesthetic color scheme.
+#
+# This is free software and you are free to redistribute and/or modify it or sell it under
+# the stipulations of the General Public License v2.0 (or later at your convenience). Please
+# Give credit to the author if any modifications are made to this code.
+
+help_menu() {
+
+echo -e "\x1b[92mUsage: lstree [-fFdDhU] <directory/file...>
+
+    \x1b[93mOptions:
+
+    \x1b[95m-f \x1b[92mPrint information about a single file.
+    \x1b[95m-F \x1b[92mPrint information about multiple files.
+    \x1b[95m-d \x1b[92mPrint information about all files in a single directory.
+    \x1b[95m-D \x1b[92mPrint information about all files in all sub-directories of the given directory.
+    \x1b[95m-U \x1b[92mUpdate lstree.
+    \x1b[95m-h \x1b[92mPrint this help info.
+\x1b[0m" && exit 0
+}
+
+func_update() {
+
+    if [ "$UID" != "0" ]; then
+       echo -e "\x1b[91mYou must be root to update!\x1b[0m"
+       exit 1
+    fi
+
+    local script="${0##*/}"
+
+	echo -e "\n\x1b[92mUpdating \x1b[95m${script}\x1b[92m...\x1b[0m\n"
+	wget -O /usr/bin/${script} https://raw.githubusercontent.com/Yo-kai-Sei-shin-kage/lstree/master/lstree
+	chmod +x /usr/bin/${script}
+	echo -e "\n\x1b[93m[\x1b[91m${script}\x1b[93m] \x1b[92msuccessfully updated!\n\x1b[0m"
+	exit 0
+}
+
+func_default() {
+
+for file in "${*}"/*
+do
+
+    if [ -f "$file" ]; then
+
+       echo -e "\x1b[91m($(stat -c %A "$file")) \x1b[92m$(stat -c %n "$file")\x1b[0m" | sed -e 's/[^ ]*\//\x1b[92m/g'
+
+    elif [ -d "$file" ]; then
+
+       echo -e "\x1b[91m($(stat -c %A "$file")) \x1b[94m$(stat -c %n "$file")\x1b[0m" | sed -e 's/[^ ]*\//\x1b[94m/g'
+
+    fi
+
+done
+}
+
+single_file() {
+
+if [ ! -f "${1}" ]; then echo -e "\x1b[93m[\x1b[91mERROR\x1b[93m]: \x1b[93mThe \x1b[95m-f\x1b[93m argument requires a file!\x1b[0m\n" && help_menu; fi
+
+    local file="${1}"
+
+    echo -e "\x1b[91m($(stat -c %A "$file")) \x1b[92m$(stat -c %n "$file")\x1b[0m" | sed -e 's/[^ ]*\//\x1b[92m/g'
+    echo -e "\x1b[93m
+\t     Type: \x1b[95m$(stat -c %F "$file")
+\t     \x1b[93mOwner: \x1b[95m$(stat -c %U "$file")
+\t     \x1b[93mSize: \x1b[95m$(stat -c %s "$file") Bytes
+\t     \x1b[93mLast Modified: \x1b[95m$(stat -c %y "$file")
+\x1b[0m"
+}
+
+many_file() {
+
+if [ ! -d "${*}" ]; then echo -e "\x1b[93m[\x1b[91mERROR\x1b[93m]: \x1b[93mThe \x1b[95m-F\x1b[93m argument requires a directory!\x1b[0m\n" && help_menu; fi
+
+for file in "${1}"/*
+do
+
+    if [ -f "$file" ]; then
+
+       echo -e "\x1b[91m($(stat -c %A "$file")) \x1b[92m$(stat -c %n "$file")\x1b[0m" | sed -e 's/[^ ]*\//\x1b[92m/g'
+       echo -e "\x1b[93m
+\t     Type: \x1b[95m$(stat -c %F "$file")
+\t     \x1b[93mOwner: \x1b[95m$(stat -c %U "$file")
+\t     \x1b[93mSize: \x1b[95m$(stat -c %s "$file") Bytes
+\t     \x1b[93mLast Modified: \x1b[95m$(stat -c %y "$file")
+\x1b[0m"
+
+    elif [ -d "$file" ]; then many_file "${file}"; fi
+
+done
+}
+
+single_dir() {
+
+if [ ! -d "${*}" ]; then echo -e "\x1b[93m[\x1b[91mERROR\x1b[93m]: \x1b[93mThe \x1b[95m-d\x1b[93m argument requires a directory!\x1b[0m\n" && help_menu; fi
+
+for file in "${1}"/*
+do
+
+    if [ -f "$file" ]; then
+
+       echo -e "\x1b[91m($(stat -c %A "$file")) \x1b[92m$(stat -c %n "$file")\x1b[0m" | sed -e 's/[^ ]*\//\x1b[92m/g'
+       echo -e "\x1b[93m
+\t     Type: \x1b[95m$(stat -c %F "$file")
+\t     \x1b[93mOwner: \x1b[95m$(stat -c %U "$file")
+\t     \x1b[93mSize: \x1b[95m$(stat -c %s "$file") Bytes
+\t     \x1b[93mLast Modified: \x1b[95m$(stat -c %y "$file")
+\x1b[0m"
+
+    elif [ -d "$file" ]; then
+
+         echo -e "\x1b[91m($(stat -c %A "$file")) \x1b[94m$(stat -c %n "$file")\x1b[0m"
+
+    fi
+
+done
+}
+
+recursive_dir() {
+
+if [ ! -d "${*}" ]; then echo -e "\x1b[93m[\x1b[91mERROR\x1b[93m]: \x1b[93mThe \x1b[95m-D\x1b[93m argument requires a directory!\x1b[0m\n" && help_menu; fi
+
+for file in "${1}"/*
+do
+
+    if [ -f "$file" ]; then
+
+       echo -e "\x1b[91m($(stat -c %A "$file")) \x1b[92m$(stat -c %n "${file}")\x1b[0m" | sed -e 's/[^ ]*\//\x1b[92m/g'
+       echo -e "\x1b[93m
+\t     Type: \x1b[95m$(stat -c %F "$file")
+\t     \x1b[93mOwner: \x1b[95m$(stat -c %U "$file")
+\t     \x1b[93mSize: \x1b[95m$(stat -c %s "$file") Bytes
+\t     \x1b[93mLast Modified: \x1b[95m$(stat -c %y "$file")
+\x1b[0m"
+
+    elif [ -d "$file" ]; then
+
+         echo -e "\x1b[91m($(stat -c %A "$file")) \x1b[94m$(stat -c %n "$file")\x1b[0m\n"
+         recursive_dir "$file"
+    fi
+
+done
+}
+
+if [[ ${1} =~ ^-?\?+$ ]]; then
+
+   help_menu
+
+elif [ ! "${*}" ]; then func_default "$(pwd)"; else while getopts "fFdDUh" opt; do
+
+   case "$opt" in
+
+        f) single_file "${2}" ;;
+        F) many_file "${2}" ;;
+        d) single_dir "${2}" ;;
+        D) recursive_dir "${2}" ;;
+        U) func_update ;;
+        h) help_menu && exit 0 ;;
+
+   esac
+
+done; fi
