@@ -58,13 +58,13 @@ mod_record() {
     if [ ! -f "${1}" ]; then echo -e "\x1b[93m[\x1b[91mERROR\x1b[93m]:  \x1b[93mThe \x1b[95m-m\x1b[93m requires a file!\x1b[0m\n" && help_menu; fi
     if [ ! -d "$HOME/fmon/logs/" ]; then mkdir -p $HOME/fmon/logs; fi
 
-    if [[ ! -f $HOME/fmon/logs/${1//[^ ]*\/}}_last_modded.log ]]
+    if [[ ! -f $HOME/fmon/logs/${1//[^ ]*\/}_last_modded.log ]]
     then
-       stat -c %y "${1}" >> $HOME/fmon/logs/${1//[^ ]*\/}}_last_modded.log
+       stat -c %y "${1}" >> $HOME/fmon/logs/${1//[^ ]*\/}_last_modded.log
     fi
 
     echo -e "\n\x1b[93mFile name: \x1b[92m$(stat -c %n ${1})\x1b[0m"
-    echo -e "\x1b[95m\n         Last Modified: $(tail -n1 $HOME/fmon/logs/${1//[^ ]*\/}}_last_modded.log)\x1b[0m\n"
+    echo -e "\x1b[95m\n         Last Modified: $(tail -n1 $HOME/fmon/logs/${1//[^ ]*\/}_last_modded.log)\x1b[0m\n"
 
 }
 
