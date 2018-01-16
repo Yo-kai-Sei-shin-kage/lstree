@@ -11,7 +11,7 @@
 
 help_menu() {
 
-echo -e "\x1b[92mUsage: lstree [-fFdDhU] <directory/file...>
+echo -e "\x1b[92mUsage: lstree [-fFdDhuU] <directory/file...>
 
     \x1b[93mOptions:
 
