@@ -19,8 +19,8 @@ echo -e "\x1b[92mUsage: lstree [-fFdDhU] <directory/file...>
     \x1b[95m-F \x1b[92mPrint information about multiple files.
     \x1b[95m-d \x1b[92mPrint information about all files in a single directory.
     \x1b[95m-D \x1b[92mPrint information about all files in all sub-directories of the given directory.
-    \x1b[95m-U \x1b[92mUpdate lstree.
     \x1b[95m-h \x1b[92mPrint this help info.
+    \x1b[95m-u, -U \x1b[92mUpdate lstree.
 \x1b[0m" && exit 0
 }
 
@@ -151,7 +151,7 @@ if [[ ${1} =~ ^-?\?+$ ]]; then
 
    help_menu
 
-elif [ ! "${*}" ]; then func_default "$(pwd)"; else while getopts "fFdDUh" opt; do
+elif [ ! "${*}" ]; then func_default "$(pwd)"; else while getopts "fFdDuUh" opt; do
 
    case "$opt" in
 
@@ -159,7 +159,7 @@ elif [ ! "${*}" ]; then func_default "$(pwd)"; else while getopts "fFdDUh" opt; 
         F) many_file "${2}" ;;
         d) single_dir "${2}" ;;
         D) recursive_dir "${2}" ;;
-        U) func_update ;;
+        u|U) func_update ;;
         h) help_menu && exit 0 ;;
 
    esac
