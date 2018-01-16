@@ -2,48 +2,78 @@
 #
 # lstree by Yokai Seishinkage
 #
-# This tools is provided to the public in the hopes that it will be useful.
+# This tool functions similarly to "ls" in that it displays files and directories but
+# does so using a tree-like structure and a more aesthetic color scheme.
 #
+# This is free software and you are free to redistribute and/or modify it or sell it under
+# the stipulations of the General Public License v2.0 (or later at your convenience). Please
+# Give credit to the author if any modifications are made to this code.
 
-## COLORS ##
-blk=$'\x1b[90m'
-red=$'\x1b[91m'
-org=$'\e[38;05;208m'
-grn=$'\x1b[92m'
-ylw=$'\x1b[93m'
-blu=$'\x1b[94m'
-pur=$'\x1b[95m'
-cyn=$'\x1b[96m'
-wht=$'\x1b[97m'
-rst=$'\x1b[0m'
+help_menu() {
 
-main() {
+echo -e "    \x1b[92mUsage: fmon.sh [-hmrs] <directory/file...>
 
-for f in "${*}"/*
+    \x1b[93mOptions:
+
+    \x1b[95m-s \x1b[92mPrint information about a single file.
+    \x1b[95m-r \x1b[92mPrint information about multiple files of recursive directories.
+    \x1b[95m-m \x1b[92mPrint information about the last and current file modification.
+    \x1b[95m-h \x1b[92mPrint this help info.
+\x1b[0m" && exit 0
+}
+
+single() {
+
+if [ ! -f "${1}" ]; then echo -e "\x1b[93m[\x1b[91mERROR\x1b[93m]: \x1b[93mThe \x1b[95m-s\x1b[93m argument requires a file!\x1b[0m\n" && help_menu; fi
+
+    local file="${1}"
+
+    echo -e "\x1b[93mFile name: \x1b[92m$(stat -c %n $file)\x1b[0m"
+    echo -e "\x1b[95m
+           File type: $(stat -c %F $file)
+           File owner: $(stat -c %U $file)
+           File size: $(stat -c %s $file) Bytes
+\x1b[0m"; exit 0
+}
+
+recurse() {
+
+if [ ! -d "${1}" ]; then echo -e "\x1b[93m[\x1b[91mERROR\x1b[93m]: \x1b[93mThe \x1b[95m-r\x1b[93m argument requires a directory!\x1b[0m\n" && help_menu; fi
+
+for file in "${*}"/*
 do
 
-    if [ -d "$f" ] ; then
+    echo -e "\x1b[93mFile name: \x1b[92m$(stat -c %n $file)\x1b[0m"
+    echo -e "\x1b[95m
+           File type: $(stat -c %F $file)
+           File owner: $(stat -c %U $file)
+           File size: $(stat -c %s $file) Bytes
+\x1b[0m"
 
-       echo -e "\n${ylw}┌────[Current Working Directory]${grn}Φ${ylw}[${red}$(pwd)${ylw}]${rst}"
-       echo -e "${ylw}└──Ͼ>[Listing sub-directory]${red}Φ${ylw}[${grn}${f}${ylw}]${rst}\n"
-       main "$f"
+done && exit 0
+}
 
-    elif [ -f "$f" ]; then
+mod_record() {
 
-       echo -e "\t${red}(Access: $(stat -c %U:%G "${f}") $(stat -c%A "${f}")); ${pur}${f/${*}/}${rst}" | tr -d '/'
+    if [ ! -f "${1}" ]; then echo -e "\x1b[93m[\x1b[91mERROR\x1b[93m]:  \x1b[93mThe \x1b[95m-m\x1b[93m requires a file!\x1b[0m\n" && help_menu; fi
+    if [ ! -d "$HOME/fmon/logs/" ]; then mkdir -p $HOME/fmon/logs; fi
 
+    if [[ ! -f $HOME/fmon/logs/${1//[^ ]*\/}}_last_modded.log ]]
+    then
+       stat -c %y "${1}" >> $HOME/fmon/logs/${1//[^ ]*\/}}_last_modded.log
     fi
 
-done
+    echo -e "\n\x1b[93mFile name: \x1b[92m$(stat -c %n ${1})\x1b[0m"
+    echo -e "\x1b[95m\n         Last Modified: $(tail -n1 $HOME/fmon/logs/${1//[^ ]*\/}}_last_modded.log)\x1b[0m\n"
 
 }
 
-if [ ! "${*}" ]; then
+if [ ! "${*}" ]; then help_menu; fi; while getopts "hmrs" opt; do
+case "$opt" in
 
-   main "$(pwd)"
+     m) mod_record "${2}" ;;
+     s) single "${2}" ;;
+     r) recurse "${2}" ;;
+     h) help_menu && exit 0 ;;
 
-else
-
-   main "${*}"
-
-fi
+esac; done
