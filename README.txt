@@ -12,7 +12,7 @@ in a nice colorful manner.
 
 ## USAGE ##
 
-$ fmon.sh [-hmrs] <directory/file...>
+$ lstree [-hmrs] <directory/file...>
 
 Options:
 
